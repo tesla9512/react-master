@@ -4,4 +4,5 @@ export const theme: DefaultTheme = {
   textColor: "#ecf0f1",
   bgColor: "#34495e",
   accentColor: "#f39c12",
+  hoverColor: "#d35400",
 };

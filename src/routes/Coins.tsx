@@ -29,9 +29,9 @@ const Coin = styled.li`
   border-radius: 15px;
   margin-bottom: 10px;
   font-weight: bold;
-  display: flex;
-  align-items: center;
   a {
+    display: flex;
+    align-items: center;
     padding: 20px;
     transition: color 0.2s ease-in;
   }
@@ -50,7 +50,7 @@ const Loader = styled.span`
 const Img = styled.img`
   width: 36px;
   height: 36px;
-  margin-left: 10px;
+  margin-right: 20px;
 `;
 
 interface CoinInterface {
@@ -67,14 +67,12 @@ function Coins() {
   const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const getCoins = async () => {
-    const res = await axios("https://api.coinpaprika.com/v1/coins");
-    setCoins(res.data.slice(0, 20));
-    setLoading(false);
-  };
-
   useEffect(() => {
-    getCoins();
+    (async () => {
+      const response = await axios("https://api.coinpaprika.com/v1/coins");
+      setCoins(response.data.slice(0, 20));
+      setLoading(false);
+    })();
   }, []);
 
   return (
@@ -88,11 +86,11 @@ function Coins() {
         <CoinList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Img
-                alt="icon"
-                src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
-              />
-              <Link to={`/${coin.symbol.toLowerCase()}`} state={coin.name}>
+              <Link to={`/${coin.id}`} state={coin.name}>
+                <Img
+                  alt="icon"
+                  src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                />
                 {coin.name} &rarr;
               </Link>
             </Coin>
