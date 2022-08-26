@@ -1,5 +1,8 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { mainTheme, subTheme } from "./theme";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -64,11 +67,28 @@ a {
 }
 `;
 
+const Toggle = styled.button`
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  font-size: 36px;
+`;
+
 function App() {
+  const [theme, setTheme] = useState(true);
+
+  const onClick = () => {
+    setTheme((current) => !current);
+  };
+
   return (
     <>
-      <GlobalStyle />
-      <Router />
+      <ThemeProvider theme={theme ? mainTheme : subTheme}>
+        <Toggle onClick={onClick}>{theme ? "🌙" : "🌞"}</Toggle>
+        <GlobalStyle />
+        <Router />
+      </ThemeProvider>
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
     </>
   );
 }

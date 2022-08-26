@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import {
   Link,
   Outlet,
@@ -8,6 +7,8 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -16,9 +17,21 @@ const Container = styled.div`
 `;
 const Header = styled.header`
   height: 15vh;
-  display: flex;
   justify-content: center;
   align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  a {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background-color: ${(props) => props.theme.windowColor};
+    text-align: center;
+    padding: 9px 0px;
+    &:hover {
+      color: ${(props) => props.theme.hoverColor};
+    }
+  }
 `;
 const Title = styled.h1`
   font-size: 48px;
@@ -31,7 +44,7 @@ const Loader = styled.span`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.windowColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -60,19 +73,21 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 7px 0px;
+  background-color: ${(props) => props.theme.windowColor};
   border-radius: 10px;
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
   a {
+    padding: 7px 0px;
     display: block;
   }
   &:hover {
     color: ${(props) => props.theme.hoverColor};
   }
 `;
-
+interface RouteParams {
+  coinId: string;
+}
 interface LocationState {
   state: string;
 }
@@ -123,33 +138,37 @@ interface PriceData {
 }
 
 function Coins() {
-  const { coinId } = useParams();
-  const { state: name } = useLocation() as LocationState;
-  const [loading, setLoading] = useState(true);
-  const [info, setInfo] = useState<InfoData>();
-  const [price, setPrice] = useState<PriceData>();
+  const { coinId } = useParams<keyof RouteParams>() as RouteParams;
+  const { state: coinName } = useLocation() as LocationState;
   const chartMatch = useMatch("/:coinId/chart");
   const priceMatch = useMatch("/:coinId/price");
 
-  useEffect(() => {
-    //즉시 실행함수 (func() {})()를 사용한 방법
-    (async () => {
-      const coins = await axios(
-        `https://api.coinpaprika.com/v1/coins/${coinId}`
-      );
-      const tickers = await axios(
-        `https://api.coinpaprika.com/v1/tickers/${coinId}`
-      );
-      setInfo(coins.data);
-      setPrice(tickers.data);
-      setLoading(false);
-    })();
-  }, [coinId]);
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(`${coinId}`)
+  );
+  const { isLoading: tickersLoading, data: tickerData } = useQuery<PriceData>(
+    ["tickers", coinId],
+    () => fetchCoinTickers(`${coinId}`),
+    {
+      refetchInterval: 1000 * 60 * 5,
+    }
+  );
+
+  const loading = infoLoading || tickersLoading;
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {coinName ? coinName : loading ? "loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
-        <Title>{name ? name : loading ? "loading..." : info?.name}</Title>
+        <Link to="/">&#60;</Link>
+        <Title>
+          {coinName ? coinName : loading ? "loading..." : infoData?.name}
+        </Title>
       </Header>
       {loading ? (
         <Loader>Now loading...</Loader>
@@ -158,26 +177,26 @@ function Coins() {
           <Overview>
             <OverviewItem>
               <span>Rank</span>
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol</span>
-              <span>${info?.symbol}</span>
+              <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
+              <span>Price</span>
+              <span>${tickerData?.quotes.USD.price.toFixed(2)}</span>
             </OverviewItem>
           </Overview>
-          <Description>{info?.description}</Description>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Suply</span>
-              <span>{price?.total_supply}</span>
+              <span>{tickerData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply</span>
-              <span>{price?.max_supply}</span>
+              <span>{tickerData?.max_supply}</span>
             </OverviewItem>
           </Overview>
           <Tabs>
@@ -188,7 +207,7 @@ function Coins() {
               <Link to={`/${coinId}/price`}>Price</Link>
             </Tab>
           </Tabs>
-          <Outlet />
+          <Outlet context={coinId} />
         </>
       )}
     </Container>
