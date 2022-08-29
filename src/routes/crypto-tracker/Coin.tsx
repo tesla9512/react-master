@@ -7,8 +7,8 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { fetchCoinInfo, fetchCoinTickers } from "../api";
-import { Helmet } from "react-helmet";
+import { fetchCoinInfo, fetchCoinTickers } from "../../api";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -28,6 +28,7 @@ const Header = styled.header`
     background-color: ${(props) => props.theme.windowColor};
     text-align: center;
     padding: 9px 0px;
+    font-weight: bold;
     &:hover {
       color: ${(props) => props.theme.hoverColor};
     }
@@ -159,13 +160,19 @@ function Coins() {
 
   return (
     <Container>
-      <Helmet>
-        <title>
-          {coinName ? coinName : loading ? "loading..." : infoData?.name}
-        </title>
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>
+            {coinName
+              ? `about ${coinName}`
+              : loading
+              ? "loading..."
+              : infoData?.name}
+          </title>
+        </Helmet>
+      </HelmetProvider>
       <Header>
-        <Link to="/">&#60;</Link>
+        <Link to="/coins">&#60;</Link>
         <Title>
           {coinName ? coinName : loading ? "loading..." : infoData?.name}
         </Title>
