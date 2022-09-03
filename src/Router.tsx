@@ -8,7 +8,7 @@ import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "./atoms";
 import { mainTheme, subTheme } from "./theme";
-import TodoList from "./routes/TodoList";
+import TodoList from "./routes/todo-list/TodoList";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
