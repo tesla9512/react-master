@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
-import { ITodo, todoAtom } from "../../atoms";
+import { Categories, ITodo, todoAtom } from "../../atoms";
 
 // const Category = styled.div`
 //   display: grid;
@@ -82,18 +82,18 @@ function Todo({ text, category, id }: ITodo) {
   return (
     <TodoItem>
       <span>{text}</span>
-      {category !== "TODO" && (
-        <TodoCategory name="TODO" onClick={onClick}>
+      {category !== Categories.TODO && (
+        <TodoCategory name={Categories.TODO + ""} onClick={onClick}>
           TODO
         </TodoCategory>
       )}
-      {category !== "DOING" && (
-        <TodoCategory name="DOING" onClick={onClick}>
+      {category !== Categories.DOING && (
+        <TodoCategory name={Categories.DOING + ""} onClick={onClick}>
           DOING
         </TodoCategory>
       )}
-      {category !== "DONE" && (
-        <TodoCategory name="DONE" onClick={onClick}>
+      {category !== Categories.DONE && (
+        <TodoCategory name={Categories.DONE + ""} onClick={onClick}>
           DONE
         </TodoCategory>
       )}

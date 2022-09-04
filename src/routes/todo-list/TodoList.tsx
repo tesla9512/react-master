@@ -1,6 +1,7 @@
-import { useRecoilValue } from "recoil";
+import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { todoAtom, todoSelector } from "../../atoms";
+import { Categories, categoryAtom, todoSelector } from "../../atoms";
 import CreateTodo from "./CreateTodo";
 import Todo from "./Todo";
 
@@ -26,8 +27,11 @@ const Title = styled.h1`
 const Todolist = styled.ul``;
 
 function TodoList() {
-  const todos = useRecoilValue(todoAtom);
-  const [toDo, doing, done] = useRecoilValue(todoSelector);
+  const categorizedTodo = useRecoilValue(todoSelector);
+  const [category, setCategory] = useRecoilState(categoryAtom);
+  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+    setCategory(event.currentTarget.value as any);
+  };
 
   return (
     <Container>
@@ -35,8 +39,14 @@ function TodoList() {
         <Title>TODO LIST</Title>
       </Header>
       <CreateTodo />
+      <select value={category} onInput={onInput}>
+        <option value={Categories.ALL}>ALL</option>
+        <option value={Categories.TODO}>TODO</option>
+        <option value={Categories.DOING}>DOING</option>
+        <option value={Categories.DONE}>DONE</option>
+      </select>
       <Todolist>
-        {todos.map((todo) => (
+        {categorizedTodo.map((todo) => (
           <Todo key={todo.id} {...todo} />
         ))}
       </Todolist>

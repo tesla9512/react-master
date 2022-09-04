@@ -5,11 +5,25 @@ export const isDarkAtom = atom({
   default: true,
 });
 
+// type categories = "TODO" | "DOING" | "DONE";
+
+export enum Categories {
+  "ALL" = "ALL",
+  "TODO" = "TODO",
+  "DOING" = "DOING",
+  "DONE" = "DONE",
+}
+
 export interface ITodo {
   text: string;
   id: number;
-  category: "TODO" | "DOING" | "DONE";
+  category: Categories;
 }
+
+export const categoryAtom = atom<Categories>({
+  key: "category",
+  default: Categories.TODO,
+});
 
 export const todoAtom = atom<ITodo[]>({
   key: "todo",
@@ -20,10 +34,12 @@ export const todoSelector = selector({
   key: "todoSelector",
   get: ({ get }) => {
     const todos = get(todoAtom);
-    return [
-      todos.filter((todo) => todo.category === "TODO"),
-      todos.filter((todo) => todo.category === "DOING"),
-      todos.filter((todo) => todo.category === "DONE"),
-    ];
+    const category = get(categoryAtom);
+
+    if (category === "ALL") {
+      return todos;
+    } else {
+      return todos.filter((todo) => todo.category === category);
+    }
   },
 });
