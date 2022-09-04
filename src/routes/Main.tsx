@@ -24,6 +24,7 @@ const Title = styled.h1`
 const Item = styled.li`
   background-color: ${(props) => props.theme.windowColor};
   color: ${(props) => props.theme.textColor};
+  font-size: 24px;
   border-radius: 15px;
   margin-bottom: 10px;
   font-weight: bold;

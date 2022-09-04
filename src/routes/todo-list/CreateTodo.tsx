@@ -4,14 +4,14 @@ import styled from "styled-components";
 import { Categories, categoryAtom, todoAtom } from "../../atoms";
 
 const TodoForm = styled.form`
-  display: flex;
+  display: grid;
+  grid-template-columns: 9fr 1fr;
   margin-bottom: 36px;
   input {
     border-radius: 8px;
     border-width: 0;
     font-weight: bold;
     font-size: 24px;
-    width: 400px;
     padding: 8px;
     background-color: ${(props) => props.theme.asymColor};
     color: ${(props) => props.theme.bgColor};
@@ -20,12 +20,18 @@ const TodoForm = styled.form`
     }
   }
   button {
+    border-radius: 8px;
+    border-width: 0;
     font-size: 36px;
     border-width: 0;
     margin-left: 12px;
-    padding: 4px 8px 4px 8px;
+    padding: 4px 12px 4px 12px;
     background-color: ${(props) => props.theme.bgColor};
     color: ${(props) => props.theme.textColor};
+    &:hover {
+      background-color: ${(props) => props.theme.hoverColor};
+      color: ${(props) => props.theme.textColor};
+    }
   }
 `;
 
@@ -55,11 +61,11 @@ function CreateTodo() {
   return (
     <TodoForm onSubmit={handleSubmit(onSubmit)}>
       <input
-        maxLength={20}
+        maxLength={30}
         {...register("toDo", {
           required: "todo is empty",
           minLength: 2,
-          maxLength: 20,
+          maxLength: 30,
         })}
         placeholder="Write a todo"
       />

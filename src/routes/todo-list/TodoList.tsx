@@ -7,7 +7,7 @@ import Todo from "./Todo";
 
 const Container = styled.div`
   padding: 0px 20px;
-  max-width: 480px;
+  max-width: 720px;
   margin: 0 auto;
 `;
 
@@ -26,10 +26,25 @@ const Title = styled.h1`
 
 const Todolist = styled.ul``;
 
+const CategoryBtn = styled.button<{ isActive: boolean }>`
+  border-radius: 12px;
+  border-width: 0px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 8px;
+  padding: 4px 8px 4px 8px;
+  background-color: ${(props) =>
+    props.isActive ? props.theme.accentColor : props.theme.asymColor};
+  color: ${(props) => props.theme.windowColor};
+  &:hover {
+    background-color: ${(props) => props.theme.hoverColor};
+  }
+`;
+
 function TodoList() {
   const categorizedTodo = useRecoilValue(todoSelector);
   const [category, setCategory] = useRecoilState(categoryAtom);
-  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+  const onInput = (event: React.FormEvent<HTMLButtonElement>) => {
     setCategory(event.currentTarget.value as any);
   };
 
@@ -39,12 +54,34 @@ function TodoList() {
         <Title>TODO LIST</Title>
       </Header>
       <CreateTodo />
-      <select value={category} onInput={onInput}>
-        <option value={Categories.ALL}>ALL</option>
-        <option value={Categories.TODO}>TODO</option>
-        <option value={Categories.DOING}>DOING</option>
-        <option value={Categories.DONE}>DONE</option>
-      </select>
+      <CategoryBtn
+        isActive={category === Categories.ALL}
+        onClick={onInput}
+        value={Categories.ALL}
+      >
+        {Categories.ALL}
+      </CategoryBtn>
+      <CategoryBtn
+        isActive={category === Categories.TODO}
+        onClick={onInput}
+        value={Categories.TODO}
+      >
+        {Categories.TODO}
+      </CategoryBtn>
+      <CategoryBtn
+        isActive={category === Categories.DOING}
+        onClick={onInput}
+        value={Categories.DOING}
+      >
+        {Categories.DOING}
+      </CategoryBtn>
+      <CategoryBtn
+        isActive={category === Categories.DONE}
+        onClick={onInput}
+        value={Categories.DONE}
+      >
+        {Categories.DONE}
+      </CategoryBtn>
       <Todolist>
         {categorizedTodo.map((todo) => (
           <Todo key={todo.id} {...todo} />

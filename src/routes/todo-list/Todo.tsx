@@ -30,10 +30,13 @@ const TodoItem = styled.li`
   font-size: 24px;
   font-weight: bold;
   display: grid;
-  grid-template-columns: 10fr 1fr 1fr;
+  grid-template-columns: 2fr 12fr 1fr 1fr 1fr;
   align-items: center;
   text-align: center;
   justify-content: center;
+  label {
+    color: ${(props) => props.theme.accentColor};
+  }
 `;
 const TodoCategory = styled.button`
   width: 60px;
@@ -46,19 +49,19 @@ const TodoCategory = styled.button`
     background-color: ${(props) => props.theme.accentColor};
   }
 `;
-// const TodoDel = styled.button`
-//   width: 32px;
-//   vertical-align: center;
-//   font-size: 20px;
-//   border-radius: 4px;
-//   border-width: 0;
-//   padding: 2px 0px 4px 0px;
-//   font-weight: bold;
-//   &:hover {
-//     color: ${(props) => props.theme.textColor};
-//     background-color: ${(props) => props.theme.accentColor};
-//   }
-// `;
+const TodoDel = styled.button`
+  vertical-align: center;
+  font-size: 16px;
+  border-radius: 4px;
+  border-width: 0;
+  /* padding: 2px 0px 4px 0px; */
+  margin-left: 4px;
+  background-color: ${(props) => props.theme.windowColor};
+  &:hover {
+    color: ${(props) => props.theme.textColor};
+    background-color: ${(props) => props.theme.accentColor};
+  }
+`;
 
 function Todo({ text, category, id }: ITodo) {
   const setTodos = useSetRecoilState(todoAtom);
@@ -79,8 +82,14 @@ function Todo({ text, category, id }: ITodo) {
       ];
     });
   };
+
+  const onDelete = () => {
+    setTodos((current) => current.filter((todo) => todo.id !== id));
+  };
+
   return (
     <TodoItem>
+      <label>{category}</label>
       <span>{text}</span>
       {category !== Categories.TODO && (
         <TodoCategory name={Categories.TODO + ""} onClick={onClick}>
@@ -97,6 +106,7 @@ function Todo({ text, category, id }: ITodo) {
           DONE
         </TodoCategory>
       )}
+      <TodoDel onClick={onDelete}>❌</TodoDel>
     </TodoItem>
   );
 }

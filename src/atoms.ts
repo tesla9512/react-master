@@ -5,8 +5,6 @@ export const isDarkAtom = atom({
   default: true,
 });
 
-// type categories = "TODO" | "DOING" | "DONE";
-
 export enum Categories {
   "ALL" = "ALL",
   "TODO" = "TODO",
@@ -22,7 +20,7 @@ export interface ITodo {
 
 export const categoryAtom = atom<Categories>({
   key: "category",
-  default: Categories.TODO,
+  default: Categories.ALL,
 });
 
 export const todoAtom = atom<ITodo[]>({
