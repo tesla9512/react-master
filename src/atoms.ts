@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import { recoilPersist } from "recoil-persist";
 
 export const isDarkAtom = atom({
   key: "isDark",
@@ -23,9 +24,15 @@ export const categoryAtom = atom<Categories>({
   default: Categories.ALL,
 });
 
+const { persistAtom } = recoilPersist({
+  key: "localTodo",
+  storage: localStorage,
+});
+
 export const todoAtom = atom<ITodo[]>({
   key: "todo",
   default: [],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const todoSelector = selector({

@@ -5,10 +5,11 @@ import Coins from "./routes/crypto-tracker/Coins";
 import Price from "./routes/crypto-tracker/Price";
 import Chart from "./routes/crypto-tracker/Chart";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { isDarkAtom } from "./atoms";
 import { mainTheme, subTheme } from "./theme";
 import TodoList from "./routes/todo-list/TodoList";
+import { useEffect } from "react";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -96,12 +97,17 @@ const HomeButton = styled(ToggleButton)`
 `;
 
 function Router() {
+  const [isDark, setMode] = useRecoilState(isDarkAtom);
+
   const toggleTheme = () => {
-    setMode((current) => !current);
+    const mode = !isDark;
+    setMode(mode);
+    localStorage.setItem("dark-mode", JSON.stringify(mode));
   };
 
-  const isDark = useRecoilValue(isDarkAtom);
-  const setMode = useSetRecoilState(isDarkAtom);
+  useEffect(() => {
+    setMode(localStorage.getItem("dark-mode") === "true");
+  }, [setMode]);
 
   return (
     <ThemeProvider theme={isDark ? mainTheme : subTheme}>
