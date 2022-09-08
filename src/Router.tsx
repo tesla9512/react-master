@@ -1,15 +1,16 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { mainTheme, subTheme } from "./theme";
+import { isDarkAtom } from "./atoms";
 import Main from "./routes/Main";
 import Coin from "./routes/crypto-tracker/Coin";
 import Coins from "./routes/crypto-tracker/Coins";
 import Price from "./routes/crypto-tracker/Price";
 import Chart from "./routes/crypto-tracker/Chart";
-import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
-import { useRecoilState } from "recoil";
-import { isDarkAtom } from "./atoms";
-import { mainTheme, subTheme } from "./theme";
 import TodoList from "./routes/todo-list/TodoList";
-import { useEffect } from "react";
+import Kanban from "./routes/trello/Kanban";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -128,6 +129,7 @@ function Router() {
             <Route path="chart" element={<Chart />} />
           </Route>
           <Route path="/todo" element={<TodoList />} />
+          <Route path="/kanban" element={<Kanban />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

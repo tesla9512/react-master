@@ -10,5 +10,8 @@ declare module "styled-components" {
     accentColor: string;
     hoverColor: string;
     windowColor: string;
+    boardColorBase: string;
+    boardColorFrom: string;
+    boardColorTo: string;
   }
 }

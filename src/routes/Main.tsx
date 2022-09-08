@@ -67,6 +67,11 @@ const projects = [
     text: "todo list",
     key: 1,
   },
+  {
+    to: "/kanban",
+    text: "kanban",
+    key: 2,
+  },
 ];
 
 function Main() {
