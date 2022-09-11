@@ -7,9 +7,9 @@ import { ITodoS, toDoState } from "../../../atoms";
 import DraggableCard from "./DraggableCard";
 
 const Wrapper = styled.div`
-  padding: 20px 10px;
+  padding: 10px 5px;
   padding-top: 20px;
-  background-color: ${(props) => props.theme.windowColor};
+  background-color: ${(props) => props.theme.boardColorBase};
   border-radius: 5px;
   min-height: 200px;
   display: flex;
@@ -23,14 +23,17 @@ interface IDraggingSnapshot {
 }
 
 const Area = styled.div<IDraggingSnapshot>`
+  flex-grow: 1;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 4px;
+  border-width: 0;
+  min-height: 240px;
   background-color: ${(props) =>
     props.isDraggingOver
       ? props.theme.boardColorTo
       : props.isDraggingFrom
       ? props.theme.boardColorFrom
-      : props.theme.boardColorBase};
-  flex-grow: 1;
-  transition: background-color 0.2s ease-in-out;
+      : props.theme.windowColor};
 `;
 
 const Title = styled.h2`
@@ -38,12 +41,21 @@ const Title = styled.h2`
   font-weight: 600;
   margin-bottom: 20px;
   font-size: 18px;
+  color: ${(props) => props.theme.windowColor};
 `;
 
 const Form = styled.form`
   width: 100%;
   input {
     width: 100%;
+    border-radius: 4px;
+    border-width: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    padding: 4px;
+    text-align: center;
+    background-color: ${(props) => props.theme.windowColor};
+    color: ${(props) => props.theme.asymColor};
   }
 `;
 
@@ -76,7 +88,6 @@ function Board({ toDos, boardId }: IBoardProps) {
   return (
     <Wrapper>
       <Title>{boardId}</Title>
-
       <Form onSubmit={handleSubmit(onValid)}>
         <input
           {...register("toDo", { required: true })}
@@ -84,7 +95,6 @@ function Board({ toDos, boardId }: IBoardProps) {
           placeholder={`Add task on ${boardId}`}
         />
       </Form>
-
       <Droppable droppableId={boardId}>
         {(provided, snapshot) => (
           <Area

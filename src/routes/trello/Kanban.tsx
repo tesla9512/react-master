@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import { toDoState } from "../../atoms";
 import Board from "./Components/Board";
@@ -22,6 +22,31 @@ const Boards = styled.div`
   grid-template-columns: repeat(3, 1fr);
 `;
 
+const Trash = styled.div`
+  position: absolute;
+  left: 90%;
+  top: 90%;
+  font-size: 72px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
+interface IDraggingSnapshot {
+  isDraggingOver: boolean;
+}
+
+const Can = styled.ul<IDraggingSnapshot>`
+  padding: 5px 6px 5px 10px;
+  border-radius: 10px;
+  max-width: 66px;
+  max-height: 82px;
+  background-color: ${(props) =>
+    props.isDraggingOver ? props.theme.asymColor : props.theme.windowColor};
+  color: ${(props) =>
+    props.isDraggingOver ? props.theme.windowColor : props.theme.textColor};
+`;
+
 function Kanban() {
   const [toDos, setToDos] = useRecoilState(toDoState);
 
@@ -36,6 +61,12 @@ function Kanban() {
         const dragObj = orderedBoard[source.index];
         orderedBoard.splice(source.index, 1);
         orderedBoard.splice(destination?.index, 0, dragObj);
+        return { ...currentBoard, [source.droppableId]: orderedBoard };
+      });
+    } else if (destination?.droppableId === "trash") {
+      setToDos((currentBoard) => {
+        const orderedBoard = [...currentBoard[source.droppableId]];
+        orderedBoard.splice(source.index, 1);
         return { ...currentBoard, [source.droppableId]: orderedBoard };
       });
     } else {
@@ -64,6 +95,20 @@ function Kanban() {
           ))}
         </Boards>
       </Wrapper>
+      <Trash>
+        <Droppable droppableId="trash">
+          {(provided, snapshot) => (
+            <Can
+              isDraggingOver={snapshot.isDraggingOver}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              🗑
+              {provided.placeholder}
+            </Can>
+          )}
+        </Droppable>
+      </Trash>
     </DragDropContext>
   );
 }

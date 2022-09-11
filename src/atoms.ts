@@ -7,10 +7,10 @@ export const isDarkAtom = atom({
 });
 
 export enum Categories {
-  "ALL" = "ALL",
-  "TODO" = "TODO",
-  "DOING" = "DOING",
-  "DONE" = "DONE",
+  "All" = "All",
+  "To Do" = "To Do",
+  "Doing" = "Doing",
+  "Done" = "Done",
 }
 
 export interface ITodo {
@@ -21,7 +21,7 @@ export interface ITodo {
 
 export const categoryAtom = atom<Categories>({
   key: "category",
-  default: Categories.ALL,
+  default: Categories.All,
 });
 
 const { persistAtom } = recoilPersist({
@@ -41,7 +41,7 @@ export const todoSelector = selector({
     const todos = get(todoAtom);
     const category = get(categoryAtom);
 
-    if (category === "ALL") {
+    if (category === "All") {
       return todos;
     } else {
       return todos.filter((todo) => todo.category === category);
@@ -65,4 +65,5 @@ export const toDoState = atom<ITodoState>({
     Doing: [],
     Done: [],
   },
+  effects_UNSTABLE: [persistAtom],
 });

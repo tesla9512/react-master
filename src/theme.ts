@@ -7,9 +7,10 @@ export const mainTheme: DefaultTheme = {
   accentColor: "#f39c12",
   hoverColor: "#d35400",
   windowColor: "#2f3640",
-  boardColorBase: "#8395a7",
-  boardColorFrom: "#576574",
-  boardColorTo: "#c8d6e5",
+  boardColorBase: "#bdc3c7",
+  boardColorFrom: "#747d8c",
+  boardColorTo: "#a4b0be",
+  cardColor: "#ced6e0",
 };
 
 export const subTheme: DefaultTheme = {
@@ -19,7 +20,8 @@ export const subTheme: DefaultTheme = {
   accentColor: "#1e90ff",
   hoverColor: "#70a1ff",
   windowColor: "#ffffff",
-  boardColorBase: "#2d98da",
-  boardColorFrom: "#3867d6",
-  boardColorTo: "#45aaf2",
+  boardColorBase: "#16a085",
+  boardColorFrom: "#bdc3c7",
+  boardColorTo: "#ecf0f1",
+  cardColor: "#1abc9c",
 };

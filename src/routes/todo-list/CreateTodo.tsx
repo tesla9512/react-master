@@ -44,9 +44,9 @@ function CreateTodo() {
   const category = useRecoilValue(categoryAtom);
   const { register, handleSubmit, setValue } = useForm<IForm>({});
   const onSubmit = ({ toDo }: IForm) => {
-    if (category === Categories.ALL) {
+    if (category === Categories.All) {
       setTodos((current) => [
-        { id: Date.now(), text: toDo, category: Categories.TODO },
+        { id: Date.now(), text: toDo, category: Categories["To Do"] },
         ...current,
       ]);
     } else {

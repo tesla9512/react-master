@@ -8,9 +8,9 @@ const Card = styled.div<{ isDragging: boolean }>`
   padding: 10px 10px;
   font-weight: bold;
   margin: 10px;
-  background-color: ${(props) => props.theme.bgColor};
-  color: ${(props) =>
-    props.isDragging ? props.theme.accentColor : props.theme.asymColor};
+  text-align: center;
+  background-color: ${(props) => props.theme.cardColor};
+  color: ${(props) => props.theme.windowColor};
 `;
 
 interface IDraggableCardProps {

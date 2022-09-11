@@ -13,5 +13,6 @@ declare module "styled-components" {
     boardColorBase: string;
     boardColorFrom: string;
     boardColorTo: string;
+    cardColor: string;
   }
 }

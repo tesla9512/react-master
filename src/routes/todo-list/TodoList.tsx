@@ -55,32 +55,32 @@ function TodoList() {
       </Header>
       <CreateTodo />
       <CategoryBtn
-        isActive={category === Categories.ALL}
+        isActive={category === Categories.All}
         onClick={onInput}
-        value={Categories.ALL}
+        value={Categories.All}
       >
-        {Categories.ALL}
+        {Categories.All}
       </CategoryBtn>
       <CategoryBtn
-        isActive={category === Categories.TODO}
+        isActive={category === Categories["To Do"]}
         onClick={onInput}
-        value={Categories.TODO}
+        value={Categories["To Do"]}
       >
-        {Categories.TODO}
+        {Categories["To Do"]}
       </CategoryBtn>
       <CategoryBtn
-        isActive={category === Categories.DOING}
+        isActive={category === Categories.Doing}
         onClick={onInput}
-        value={Categories.DOING}
+        value={Categories.Doing}
       >
-        {Categories.DOING}
+        {Categories.Doing}
       </CategoryBtn>
       <CategoryBtn
-        isActive={category === Categories.DONE}
+        isActive={category === Categories.Done}
         onClick={onInput}
-        value={Categories.DONE}
+        value={Categories.Done}
       >
-        {Categories.DONE}
+        {Categories.Done}
       </CategoryBtn>
       <Todolist>
         {categorizedTodo.map((todo) => (

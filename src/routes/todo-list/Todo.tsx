@@ -3,24 +3,6 @@ import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { Categories, ITodo, todoAtom } from "../../atoms";
 
-// const Category = styled.div`
-//   display: grid;
-//   grid-template-columns: 1fr 1fr 1fr 1fr;
-//   align-items: center;
-//   text-align: center;
-//   justify-content: center;
-
-//   button {
-//     height: 24px;
-//     margin: 0 4px 0 4px;
-//     border-radius: 6px;
-//     border-width: 0;
-//     text-transform: uppercase;
-//   }
-// `;
-
-// const Todolist = styled.ul``;
-
 const TodoItem = styled.li`
   background-color: ${(props) => props.theme.windowColor};
   color: ${(props) => props.theme.textColor};
@@ -91,19 +73,19 @@ function Todo({ text, category, id }: ITodo) {
     <TodoItem>
       <label>{category}</label>
       <span>{text}</span>
-      {category !== Categories.TODO && (
-        <TodoCategory name={Categories.TODO + ""} onClick={onClick}>
-          TODO
+      {category !== Categories["To Do"] && (
+        <TodoCategory name={Categories["To Do"] + ""} onClick={onClick}>
+          To Do
         </TodoCategory>
       )}
-      {category !== Categories.DOING && (
-        <TodoCategory name={Categories.DOING + ""} onClick={onClick}>
-          DOING
+      {category !== Categories.Doing && (
+        <TodoCategory name={Categories.Doing + ""} onClick={onClick}>
+          Doing
         </TodoCategory>
       )}
-      {category !== Categories.DONE && (
-        <TodoCategory name={Categories.DONE + ""} onClick={onClick}>
-          DONE
+      {category !== Categories.Done && (
+        <TodoCategory name={Categories.Done + ""} onClick={onClick}>
+          Done
         </TodoCategory>
       )}
       <TodoDel onClick={onDelete}>❌</TodoDel>

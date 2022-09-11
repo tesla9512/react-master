@@ -65,8 +65,10 @@ table {
   box-sizing: border-box;
 }
 body { //폰트 적용
+  overflow: hidden;
   font-family: 'Source Sans Pro', sans-serif;
   background-color: ${(props) => props.theme.bgColor};
+  /* background-image: radial-gradient(circle at 10% 10%, rgb(255, 156, 156) 0%, rgb(179, 201, 241) 80%); */
   color: ${(props) => props.theme.textColor}
 }
 a {
