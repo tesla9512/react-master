@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion, useMotionValue, useTransform, useScroll } from "framer-motion";
 import { useRef } from "react";
 import styled from "styled-components";
 
@@ -30,9 +30,15 @@ const DragCircle = styled(Box)`
   border-radius: 40px;
 `;
 
+const ScrollCircle = styled(Box)`
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+`;
+
 const gestureVariants = {
   hover: { scale: 1.25, rotateZ: 90, backgroundColor: "rgb(254, 202, 87)" },
-  click: { scale: 1, borderRadius: "100px" },
+  click: { scale: 1, borderRadius: "100px", transition: { duration: 0.15 } },
 };
 
 const dragVariants = {
@@ -42,12 +48,30 @@ const dragVariants = {
   click: { backgroundColor: "rgb(254, 202, 87)" },
 };
 
-function Gesture() {
+function Advance() {
   const constraintBoxA = useRef<HTMLDivElement>(null);
+  const constraintBoxB = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const scaleX = useTransform(x, [-75, 0, 75], [0.6, 1, 0.6]);
+  const { scrollY } = useScroll();
+  const scaleY = useTransform(scrollY, [0, 777, 1554], [0.8, 2, 0.8]);
+  const colorY = useTransform(
+    scrollY,
+    [0, 540, 1080],
+    ["rgb(255, 255, 255)", "rgb(254, 202, 87)", "rgb(255, 255, 255)"]
+  );
+
+  // useEffect(() => {
+  //   return scrollY.onChange((latest) => {
+  //     console.log("Page scroll: ", latest);
+  //   });
+  // }, []);
+
   return (
     <>
+      <ConstraintsBox ref={constraintBoxB}>
+        <ScrollCircle style={{ scale: scaleY, backgroundColor: colorY }} />
+      </ConstraintsBox>
       <GestureBox
         variants={gestureVariants}
         whileHover="hover"
@@ -69,4 +93,4 @@ function Gesture() {
   );
 }
 
-export default Gesture;
+export default Advance;
