@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
+  height: 100vh;
+  width: 100vw;
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
@@ -33,7 +35,7 @@ const Item = styled.li`
     align-items: center;
     justify-content: center;
     padding: 20px;
-    transition: color 0.2s ease-in;
+    /* transition: color 0.2s ease-in; */
     text-transform: uppercase;
   }
   &:hover {
@@ -71,6 +73,11 @@ const projects = [
     to: "/kanban",
     text: "kanban",
     key: 2,
+  },
+  {
+    to: "/anime",
+    text: "anime",
+    key: 3,
   },
 ];
 

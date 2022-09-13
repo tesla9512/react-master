@@ -6,6 +6,7 @@ import CreateTodo from "./CreateTodo";
 import Todo from "./Todo";
 
 const Container = styled.div`
+  height: 100vh;
   padding: 0px 20px;
   max-width: 720px;
   margin: 0 auto;

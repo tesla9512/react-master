@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { fetchCoins } from "../../api";
 
 const Container = styled.div`
+  height: 100vh;
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;

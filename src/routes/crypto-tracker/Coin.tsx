@@ -11,6 +11,7 @@ import { fetchCoinInfo, fetchCoinTickers } from "../../api";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const Container = styled.div`
+  height: 100vh;
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;

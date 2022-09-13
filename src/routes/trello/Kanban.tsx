@@ -24,7 +24,7 @@ const Boards = styled.div`
 
 const Trash = styled.div`
   position: absolute;
-  left: 90%;
+  left: 2%;
   top: 90%;
   font-size: 72px;
   justify-content: center;

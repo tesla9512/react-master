@@ -11,6 +11,7 @@ import Price from "./routes/crypto-tracker/Price";
 import Chart from "./routes/crypto-tracker/Chart";
 import TodoList from "./routes/todo-list/TodoList";
 import Kanban from "./routes/trello/Kanban";
+import Anime from "./routes/Framer-motion/Anime";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -65,10 +66,16 @@ table {
   box-sizing: border-box;
 }
 body { //폰트 적용
-  overflow: hidden;
+  /* width: 100vw;
+  height:100vh; */
+  /* overflow: hidden; */
   font-family: 'Source Sans Pro', sans-serif;
-  background-color: ${(props) => props.theme.bgColor};
-  /* background-image: radial-gradient(circle at 10% 10%, rgb(255, 156, 156) 0%, rgb(179, 201, 241) 80%); */
+  /* background-color: ${(props) => props.theme.bgColor}; */
+
+    background:linear-gradient(
+      135deg,
+      ${(props) => props.theme.gradColorFrom},
+      ${(props) => props.theme.gradColorTo});
   color: ${(props) => props.theme.textColor}
 }
 a {
@@ -132,6 +139,7 @@ function Router() {
           </Route>
           <Route path="/todo" element={<TodoList />} />
           <Route path="/kanban" element={<Kanban />} />
+          <Route path="/anime" element={<Anime />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
