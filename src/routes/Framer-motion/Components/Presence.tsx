@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { wrap } from "popmotion";
 
 const Btn = styled.button`
   width: 60px;
@@ -8,7 +9,7 @@ const Btn = styled.button`
   border-radius: 20px;
   border-width: 0;
   place-self: center;
-  font-size: 20px;
+  font-size: 16px;
 `;
 
 const Box = styled(motion.div)`
@@ -18,10 +19,13 @@ const Box = styled(motion.div)`
   border-radius: 20px;
   place-self: center;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  line-height: 60px;
+  color: rgb(0, 0, 0);
 `;
 
 const Circle = styled(motion.div)`
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(254, 202, 87);
   color: rgb(0, 0, 0);
   height: 60px;
   width: 60px;
@@ -36,6 +40,8 @@ const Circle = styled(motion.div)`
 `;
 
 const Wrap = styled.div`
+  width: 200px;
+  height: 200px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   /* grid-template-rows: repeat(2, 1fr); */
@@ -59,12 +65,13 @@ const boxVariants = {
 };
 
 const circleVariants = {
-  entry: (isBack: boolean) => ({
-    x: isBack ? 0 : 132,
+  entry: (direction: number) => ({
+    x: direction > 0 ? 0 : 132,
     opacity: 0,
     scale: 0,
   }),
   center: {
+    zIndex: 1,
     x: 66,
     opacity: 1,
     scale: 1,
@@ -72,8 +79,9 @@ const circleVariants = {
       duration: 0.3,
     },
   },
-  exit: (isBack: boolean) => ({
-    x: isBack ? 132 : 0,
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? 0 : 132,
     opacity: 0,
     scale: 0,
     transition: {
@@ -86,16 +94,11 @@ function Presence() {
   const [showing, setShowing] = useState(false);
   const boom = () => setShowing(true);
   const bye = () => setShowing(false);
-  const [visible, setVisible] = useState(1);
-  const [back, setBack] = useState(false);
-  const viewNext = () => {
-    setBack(false);
-    setVisible((prev) => (prev === 3 ? 1 : prev + 1));
+  const [[page, direction], setPage] = useState([0, 0]);
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection]);
   };
-  const viewPrev = () => {
-    setBack(true);
-    setVisible((prev) => (prev === 1 ? 3 : prev - 1));
-  };
+  const index = wrap(0, 4, page);
 
   return (
     <>
@@ -109,23 +112,25 @@ function Presence() {
               initial="initial"
               animate="visible"
               exit="leaving"
-            />
+            >
+              presence
+            </Box>
           ) : null}
         </AnimatePresence>
       </Wrap>
       <Wrap>
-        <Btn onClick={viewNext}>Next</Btn>
-        <Btn onClick={viewPrev}>Prev</Btn>
-        <AnimatePresence custom={back}>
+        <Btn onClick={() => paginate(1)}>Next</Btn>
+        <Btn onClick={() => paginate(-1)}>Prev</Btn>
+        <AnimatePresence initial={false} custom={direction}>
           <Circle
-            key={visible}
-            custom={back}
+            key={page}
+            custom={direction}
             variants={circleVariants}
             initial="entry"
             animate="center"
             exit="exit"
           >
-            {visible}
+            {index}
           </Circle>
         </AnimatePresence>
       </Wrap>

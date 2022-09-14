@@ -87,7 +87,7 @@ function Main() {
       <Header>
         <HelmetProvider>
           <Helmet>
-            <title>nomad react master</title>
+            <title>nomad react practice</title>
           </Helmet>
         </HelmetProvider>
         <Header>
